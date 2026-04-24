@@ -38,6 +38,13 @@ export const Route = createRootRoute({
       { name: "author", content: "Tribunal" },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },
+      { property: "og:title", content: "Tribunal — Media Accuracy Verifier" },
+      { name: "twitter:title", content: "Tribunal — Media Accuracy Verifier" },
+      { name: "description", content: "Tribunal is an AI Media Accuracy Verifier that issues formal public rulings." },
+      { property: "og:description", content: "Tribunal is an AI Media Accuracy Verifier that issues formal public rulings." },
+      { name: "twitter:description", content: "Tribunal is an AI Media Accuracy Verifier that issues formal public rulings." },
+      { property: "og:image", content: "https://pub-bb2e103a32db4e198524a2e9ed8f35b4.r2.dev/3d33dcd7-d50e-44d5-9c5a-62a5a004735b/id-preview-6cdb7b0f--c2d0995e-4497-45cc-be35-795a64b4c26c.lovable.app-1777048319441.png" },
+      { name: "twitter:image", content: "https://pub-bb2e103a32db4e198524a2e9ed8f35b4.r2.dev/3d33dcd7-d50e-44d5-9c5a-62a5a004735b/id-preview-6cdb7b0f--c2d0995e-4497-45cc-be35-795a64b4c26c.lovable.app-1777048319441.png" },
     ],
     links: [
       { rel: "stylesheet", href: appCss },
