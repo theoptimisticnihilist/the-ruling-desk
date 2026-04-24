@@ -288,6 +288,7 @@ function AnalyzePage() {
 
 function FieldBlock({
   label,
+  helper,
   chars,
   uploadLabel,
   uploaded,
@@ -298,6 +299,7 @@ function FieldBlock({
   children,
 }: {
   label: string;
+  helper?: string;
   chars: number;
   uploadLabel: string;
   uploaded: ExtractedFile | null;
@@ -311,12 +313,15 @@ function FieldBlock({
 
   return (
     <div>
-      <div className="mb-3 flex items-baseline justify-between">
+      <div className="mb-1 flex items-baseline justify-between">
         <label className="institutional-mark">{label}</label>
         <span className="text-xs text-ink-soft">
           {chars.toLocaleString()} chars
         </span>
       </div>
+      {helper && (
+        <p className="mb-3 text-xs leading-relaxed text-ink-soft">{helper}</p>
+      )}
       {children}
       <div className="mt-3 flex flex-wrap items-center gap-3">
         <input
