@@ -8,20 +8,20 @@ const r = sampleRulingData;
 export const Route = createFileRoute("/")({
   head: () => ({
     meta: [
-      { title: "Tribunal — Turn source material into a public accuracy ruling" },
+      { title: "Tribunal — A truth process for public claims" },
       {
         name: "description",
         content:
-          "Tribunal compares interviews to published coverage, separates source-derived claims from external reporting, and issues a self-reviewed public ruling with evidence, scores, and a shareable record.",
+          "Tribunal compares interviews to published coverage, separates source-derived claims from external reporting, and issues a self-reviewed public ruling built on evidence, challenge, and disclosure.",
       },
       {
         property: "og:title",
-        content: "Tribunal — Turn source material into a public accuracy ruling",
+        content: "Tribunal — A truth process for public claims",
       },
       {
         property: "og:description",
         content:
-          "Tribunal compares interviews to published coverage, separates source-derived claims from external reporting, and issues a self-reviewed public ruling.",
+          "Truth is not a vibe. It is a process. Tribunal issues self-reviewed public rulings on media accuracy.",
       },
     ],
   }),
@@ -31,45 +31,60 @@ export const Route = createFileRoute("/")({
 const STEPS: { n: string; title: string; body: string }[] = [
   {
     n: "01",
-    title: "Add the source record",
-    body: "Upload or paste an interview transcript, audio, or video.",
+    title: "Admit the source record",
+    body: "Upload or paste the interview, transcript, article, or supporting document. The source record becomes the evidentiary baseline.",
   },
   {
     n: "02",
-    title: "Add the published article",
-    body: "Paste the article or URL.",
+    title: "Classify the article",
+    body: "Tribunal separates interview-derived passages from separate-source reporting, reporter context, and claims that require external verification.",
   },
   {
     n: "03",
-    title: "Issue a public ruling",
-    body: "Receive a claim-level fidelity report, model review, and shareable scorecard.",
+    title: "Issue a reviewed ruling",
+    body: "The system scores faithfulness to source, runs a dissenting review against the first model’s reasoning, and publishes a citable ruling.",
   },
 ];
 
 const MEASURES: { label: string; body: string }[] = [
   {
     label: "Quote fidelity",
-    body: "How closely article quotations track the words on the supplied record.",
+    body: "Was the source quoted accurately?",
   },
   {
     label: "Context retention",
-    body: "Whether qualifications and hedges in the source survive into the article.",
+    body: "Did the article preserve the meaning of the source?",
   },
   {
     label: "Material omission",
-    body: "Whether substantive elements of the source are dropped in a way that changes meaning.",
-  },
-  {
-    label: "Coverage",
-    body: "How much of the source the article actually engages with.",
+    body: "Did the article leave out context that changes interpretation?",
   },
   {
     label: "Source provenance",
-    body: "Whether each passage is interview-derived, separately sourced, reporter context, or unverified.",
+    body: "Which claims come from the interview, separate reporting, or outside the supplied record?",
   },
   {
-    label: "Tribunal integrity",
-    body: "Whether the ruling held up to adversarial review and what the dissent changed.",
+    label: "Tribunal review",
+    body: "Did a second model challenge the first model’s reasoning before publication?",
+  },
+  {
+    label: "Public record",
+    body: "Can readers inspect the evidence behind the ruling?",
+  },
+];
+
+const TRIBUNAL_BULLETS: { label: string; body: string }[] = [
+  {
+    label: "Majority opinion",
+    body: "Classifies claims and scores source fidelity.",
+  },
+  {
+    label: "Dissenting review",
+    body: "Challenges overreach, weak evidence, and inflated certainty.",
+  },
+  {
+    label: "Final synthesis",
+    body: "Preserves the record and explains what changed after review.",
   },
 ];
 
@@ -83,7 +98,7 @@ function HomePage() {
         <section className="border-b border-border">
           <div className="mx-auto max-w-4xl px-6 pt-20 pb-16 md:px-10 md:pt-28 md:pb-24">
             <p className="institutional-mark mb-8">
-              Tribunal · AI Media Accuracy Verifier
+              The Internet Needs a Truth Process
             </p>
             <h1 className="font-serif text-[2.6rem] leading-[1.05] tracking-tight text-ink md:text-6xl">
               Turn source material into a public accuracy ruling.
@@ -91,8 +106,8 @@ function HomePage() {
             <p className="mt-8 max-w-2xl text-lg leading-relaxed text-ink-soft md:text-xl">
               Tribunal compares interviews to published coverage, separates
               source-derived claims from external reporting, and issues a
-              self-reviewed public ruling with evidence, scores, and a
-              shareable record.
+              self-reviewed public ruling built on evidence, challenge, and
+              disclosure.
             </p>
 
             <div className="mt-10 flex flex-col items-start gap-4 sm:flex-row sm:items-center sm:gap-6">
@@ -110,6 +125,10 @@ function HomePage() {
                 Analyze a Story
               </Link>
             </div>
+
+            <p className="mt-10 font-serif text-base italic text-ink-soft md:text-lg">
+              Truth is not a vibe. It is a process.
+            </p>
           </div>
         </section>
 
@@ -122,7 +141,7 @@ function HomePage() {
                   01
                 </span>
                 <h2 className="font-serif text-2xl text-ink md:text-3xl">
-                  How a ruling is issued
+                  A truth process for public claims.
                 </h2>
               </div>
               <span className="institutional-mark">3 steps</span>
@@ -158,7 +177,7 @@ function HomePage() {
                   02
                 </span>
                 <h2 className="font-serif text-2xl text-ink md:text-3xl">
-                  What it measures
+                  Not just accuracy. Procedural trust.
                 </h2>
               </div>
               <span className="institutional-mark">
@@ -184,7 +203,52 @@ function HomePage() {
           </div>
         </section>
 
-        {/* Demo preview card */}
+        {/* Watching the watcher — AI Tribunal section */}
+        <section className="border-b border-border">
+          <div className="mx-auto max-w-4xl px-6 py-20 md:px-10 md:py-28">
+            <p className="institutional-mark mb-6">Watching the Watcher</p>
+            <h2 className="font-serif text-3xl leading-tight text-ink md:text-5xl">
+              A ruling is only trustworthy if the adjudicator is reviewed.
+            </h2>
+            <p className="mt-8 max-w-3xl text-lg leading-relaxed text-ink-soft">
+              A single model can summarize. It can also overstate, misclassify,
+              or miss context. Tribunal uses a multi-pass review process: one
+              model issues the majority opinion, a second challenges its
+              reasoning, and a final synthesis records what changed after
+              review. The result is not just an answer. It is a reviewed
+              judgment.
+            </p>
+
+            <ol className="mt-10 grid gap-px border border-border bg-border md:grid-cols-3">
+              {TRIBUNAL_BULLETS.map((b, i) => (
+                <li key={b.label} className="bg-card p-6 md:p-7">
+                  <div className="font-serif text-2xl text-ink-soft tabular-nums">
+                    {String(i + 1).padStart(2, "0")}
+                  </div>
+                  <h3 className="mt-3 font-serif text-lg text-ink">
+                    {b.label}
+                  </h3>
+                  <p className="mt-2 text-sm leading-relaxed text-ink-soft">
+                    {b.body}
+                  </p>
+                </li>
+              ))}
+            </ol>
+
+            <div className="mt-10">
+              <Link
+                to="/rulings/001"
+                hash="06"
+                className="inline-flex items-center gap-3 border border-ink px-5 py-2.5 text-sm font-medium tracking-wide text-ink transition-colors hover:bg-ink hover:text-parchment"
+              >
+                See the Tribunal Review
+                <span aria-hidden>→</span>
+              </Link>
+            </div>
+          </div>
+        </section>
+
+        {/* Sample ruling preview */}
         <section>
           <div className="mx-auto max-w-6xl px-6 py-16 md:px-10 md:py-24">
             <div className="flex items-baseline justify-between border-b border-border-strong pb-3">
@@ -193,13 +257,20 @@ function HomePage() {
                   03
                 </span>
                 <h2 className="font-serif text-2xl text-ink md:text-3xl">
-                  Sample ruling on file
+                  See the process applied to a real article.
                 </h2>
               </div>
               <span className="institutional-mark">
                 {r.caseMetadata.docketNumber}
               </span>
             </div>
+
+            <p className="mt-6 max-w-3xl text-base leading-relaxed text-ink-soft md:text-lg">
+              The sample ruling evaluates GearJunkie’s coverage of the Enhanced
+              Games against the supplied interview record. The result is not a
+              simple “good” or “bad” score. It shows what was faithful, what
+              was compressed, and which claims require separate verification.
+            </p>
 
             <Link
               to="/rulings/001"
@@ -219,12 +290,12 @@ function HomePage() {
                     {r.shareCard.summary}
                   </p>
 
-                  <div className="mt-8 flex items-center justify-between border-t border-border pt-5 text-xs text-ink-soft">
-                    <span className="font-mono">
+                  <div className="mt-8 flex flex-wrap items-center justify-between gap-3 border-t border-border pt-5 text-xs text-ink-soft">
+                    <span className="break-all font-mono">
                       {r.caseMetadata.publicUrl}
                     </span>
                     <span className="inline-flex items-center gap-2 font-medium text-ink transition-transform group-hover:translate-x-1">
-                      Open ruling
+                      Open Ruling No. 001
                       <span aria-hidden>→</span>
                     </span>
                   </div>

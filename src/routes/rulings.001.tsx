@@ -188,12 +188,20 @@ function RulingPage() {
         </section>
 
         {/* 6 — Tribunal review */}
-        <section className="mt-16">
+        <section id="06" className="mt-16 scroll-mt-24">
           <SectionLabel
             index="06"
             title="Tribunal review"
             meta={`${top.tribunalReview.checksPassed}/${top.tribunalReview.checksTotal} checks · ${top.tribunalReview.label}`}
           />
+          <p className="mt-6 max-w-3xl font-serif text-lg italic leading-snug text-ink md:text-xl">
+            The ruling was challenged before publication.
+          </p>
+          <p className="mt-4 max-w-3xl text-base leading-relaxed text-ink-soft">
+            A single model did not issue this ruling unchecked. The initial
+            opinion was reviewed by a dissenting pass that challenged
+            classifications, certainty levels, and evidentiary overreach.
+          </p>
 
           <div className="mt-8 border border-border bg-card p-6 md:p-8">
             <p className="institutional-mark mb-3">Dissent &amp; challenge</p>
@@ -213,7 +221,11 @@ function RulingPage() {
           </div>
 
           <div className="mt-8">
-            <p className="institutional-mark mb-4">What changed after review</p>
+            <p className="institutional-mark mb-2">What the Tribunal Changed</p>
+            <p className="mb-5 max-w-3xl text-sm leading-relaxed text-ink-soft md:text-base">
+              The dissenting review materially changed the record. It did not
+              merely affirm the first answer.
+            </p>
             <ol className="space-y-4 border-l-2 border-border-strong pl-6">
               {r.whatChangedAfterReview.map((item, i) => (
                 <li
@@ -274,10 +286,20 @@ function HeaderBlock() {
       </div>
 
       <header className="mt-10">
-        <p className="institutional-mark mb-4">In the matter of</p>
+        <p className="institutional-mark mb-4">Public Accuracy Ruling</p>
         <h1 className="font-serif text-[2.4rem] leading-[1.05] tracking-tight text-ink md:text-5xl">
           {meta.caseTitle}
         </h1>
+        <p className="mt-5 max-w-2xl font-serif text-lg italic leading-snug text-ink-soft md:text-xl">
+          A claim-level review of published coverage against the admitted
+          source record.
+        </p>
+        <p className="mt-6 max-w-2xl text-base leading-relaxed text-ink-soft md:text-lg">
+          This ruling evaluates whether the GearJunkie article faithfully
+          represented the supplied interview record. It separates
+          interview-derived claims from separate-source reporting, reporter
+          context, and claims that require external verification.
+        </p>
 
         <dl className="mt-10 grid grid-cols-1 gap-x-10 gap-y-5 border-y border-border py-6 sm:grid-cols-3">
           <Meta label="Docket" value={meta.docketNumber} />

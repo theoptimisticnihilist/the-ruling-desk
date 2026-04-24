@@ -6,40 +6,30 @@ import { CLASSIFICATIONS } from "@/data/sampleRulingData";
 export const Route = createFileRoute("/methodology")({
   head: () => ({
     meta: [
-      { title: "Methodology — Tribunal" },
+      { title: "Methodology — Truth Requires Process" },
       {
         name: "description",
         content:
-          "Scope, classification, scoring, tribunal review, certainty labels, and disclosure for every Tribunal ruling.",
+          "Why Tribunal reviews itself: scope, classification, scoring, dissenting review, certainty labels, and disclosure for every ruling.",
       },
-      { property: "og:title", content: "Methodology — Tribunal" },
+      { property: "og:title", content: "Methodology — Truth Requires Process" },
       {
         property: "og:description",
         content:
-          "How Tribunal classifies passages, scores fidelity, runs adversarial review, and discloses its limits.",
+          "A media accuracy ruling should not depend on a single unchecked model response. Tribunal evaluates the article, then evaluates the evaluation.",
       },
     ],
   }),
   component: MethodologyPage,
 });
 
-const SCORING: { label: string; body: string }[] = [
-  {
-    label: "Quote fidelity",
-    body: "How closely the article's quotations track the words in the supplied transcript. Light disfluency cleanup is acceptable; substituted words, reordered clauses, and rewritten endings are not.",
-  },
-  {
-    label: "Context retention",
-    body: "Whether the qualifications, hedges, and hybrid framings present in the source survive into the article. A passage may be near-verbatim yet still fail context retention if it strips a load-bearing caveat.",
-  },
-  {
-    label: "Material omission",
-    body: "Whether substantive elements of the source — counterpoints, conditions, scope limits — are dropped in a way that changes meaning. Editorial compression is not, by itself, a defect; meaning-altering compression is.",
-  },
-  {
-    label: "Coverage",
-    body: "How much of the source the article actually engages with. Coverage is what the article chose to use, not just whether what it used was accurate.",
-  },
+const SCORING_DIMENSIONS: string[] = [
+  "Quote fidelity",
+  "Context retention",
+  "Material omission",
+  "Coverage",
+  "Source provenance",
+  "Tribunal integrity",
 ];
 
 const CERTAINTY: { label: string; body: string }[] = [
@@ -57,7 +47,7 @@ const CERTAINTY: { label: string; body: string }[] = [
   },
   {
     label: "Indeterminate",
-    body: "The supplied record cannot resolve the question. This usually means the claim is outside the transcript and requires separate verification before any verdict is appropriate.",
+    body: "The supplied record cannot resolve the question. The claim is outside the transcript and requires separate verification before any verdict is appropriate.",
   },
 ];
 
@@ -67,42 +57,54 @@ function MethodologyPage() {
       <SiteHeader />
 
       <main className="mx-auto max-w-3xl px-6 pt-16 pb-24 md:px-10 md:pt-24">
-        <p className="institutional-mark mb-6">Methodology &amp; Disclosure</p>
+        <p className="institutional-mark mb-6">Methodology</p>
         <h1 className="font-serif text-4xl leading-tight text-ink md:text-5xl">
-          How a Tribunal ruling is reached.
+          Methodology: Truth Requires Process
         </h1>
         <p className="mt-6 text-lg leading-relaxed text-ink-soft">
-          Tribunal makes one narrow comparison: between what a source said on
-          record and what a publication printed. This page describes the scope
-          of that review, how passages are classified, how fidelity is scored,
-          how the ruling is challenged before it is issued, and what the
-          system does not attempt to do.
+          Tribunal is designed around a simple premise: a media accuracy
+          ruling should not depend on a single unchecked model response. The
+          system evaluates the article, then evaluates the evaluation.
         </p>
 
-        {/* 1 — Scope of review */}
-        <Section index="01" title="Scope of review">
+        {/* 1 — Why the tribunal reviews itself */}
+        <Section index="01" title="Why the tribunal reviews itself">
           <p>
-            Tribunal evaluates whether a published article{" "}
-            <em className="not-italic font-medium text-ink">
-              faithfully represented the supplied source interview
-            </em>
-            . That is the entire question. The system does not adjudicate the
-            article's policy claims, the journalist's intent, or the editorial
-            judgment of the publication.
+            Any system that claims to adjudicate truth must answer a basic
+            question: who watches the watcher? Tribunal addresses that problem
+            by making review part of the ruling itself. The first model issues
+            a majority opinion. A second model challenges the opinion for
+            category errors, weak evidence, inflated certainty, and reasoning
+            beyond the record. The final ruling preserves both the judgment
+            and the review that shaped it.
           </p>
+
+          {/* Pull-quote callout */}
+          <figure className="not-prose mt-8 border-l-4 border-ink bg-parchment-deep px-6 py-6 md:px-8 md:py-7">
+            <blockquote className="font-serif text-xl leading-snug text-ink md:text-2xl">
+              “The model tribunal does not merely improve the answer. It
+              reveals where the adjudicator itself was oversimplifying the
+              evidentiary record.”
+            </blockquote>
+            <figcaption className="institutional-mark mt-4">
+              On the purpose of dissent
+            </figcaption>
+          </figure>
+        </Section>
+
+        {/* 2 — Scope of Review */}
+        <Section index="02" title="Scope of Review">
           <p>
-            Importantly, the system does{" "}
-            <em className="not-italic font-medium text-ink">not</em> assume
-            every article passage should appear in the transcript. Articles
-            routinely include background, separately-sourced reporting, and
-            reporter-added context. Tribunal is built to recognise that, name
-            it, and judge each passage by the standard appropriate to its
-            classification.
+            Tribunal does not assume every article passage should appear in
+            the interview. Real articles are mixed artifacts. Some passages
+            are interview-derived. Others come from separate sources, reporter
+            background, or claims that require external verification. The
+            system classifies source type before scoring fidelity.
           </p>
         </Section>
 
-        {/* 2 — Article classification */}
-        <Section index="02" title="Article classification">
+        {/* 3 — Classification Categories */}
+        <Section index="03" title="Classification Categories">
           <p>
             Every reviewed passage receives exactly one of four
             classifications. Classification answers a single question: where
@@ -128,99 +130,29 @@ function MethodologyPage() {
               </li>
             ))}
           </ol>
-          <p className="mt-6 border-t border-border pt-5 text-sm italic text-ink-soft">
-            Note: “Context compression” is not a classification. It is a
-            verdict overlay that may attach to interview-derived passages
-            where wording flattens nuance.
-          </p>
         </Section>
 
-        {/* 3 — Scoring dimensions */}
-        <Section index="03" title="Scoring dimensions">
+        {/* 4 — Scoring Dimensions */}
+        <Section index="04" title="Scoring Dimensions">
           <p>
             Within interview-derived passages, fidelity is assessed against
-            four scoring dimensions. They are weighted but reported
-            separately so a reader can see where a ruling's score is coming
-            from.
+            the dimensions below. They are reported separately so a reader
+            can see where a ruling’s score is coming from.
           </p>
-          <ul className="not-prose mt-6 divide-y divide-border border-y border-border">
-            {SCORING.map((d) => (
-              <li
-                key={d.label}
-                className="grid grid-cols-1 gap-2 py-5 sm:grid-cols-[200px_1fr] sm:gap-6"
-              >
-                <p className="font-serif text-lg text-ink">{d.label}</p>
-                <p className="text-base leading-relaxed text-ink-soft">
-                  {d.body}
-                </p>
+          <ul className="not-prose mt-6 grid gap-px border border-border bg-border sm:grid-cols-2">
+            {SCORING_DIMENSIONS.map((d, i) => (
+              <li key={d} className="bg-card p-5">
+                <span className="font-mono text-xs text-ink-soft tabular-nums">
+                  {String(i + 1).padStart(2, "0")}
+                </span>
+                <p className="mt-2 font-serif text-lg text-ink">{d}</p>
               </li>
             ))}
           </ul>
         </Section>
 
-        {/* 4 — Tribunal review */}
-        <Section index="04" title="Tribunal review">
-          <p>
-            A single model issuing a single opinion is a known failure mode:
-            confident, fluent, and prone to category errors it cannot detect
-            from the inside. Tribunal mitigates this with a three-step
-            adversarial process.
-          </p>
-          <ol className="not-prose mt-6 space-y-6 border-t border-border pt-6">
-            {[
-              {
-                title: "Majority opinion",
-                body: "A first model reads the supplied evidence and drafts a ruling: classifications, verdicts, scores, and reasoning.",
-              },
-              {
-                title: "Dissent / challenge",
-                body: "A second model is given the same evidence and the first model's ruling, and is instructed to challenge it — surface category errors, overconfidence, missed context, and unsupported reasoning.",
-              },
-              {
-                title: "Synthesis",
-                body: "A final model reconciles the majority opinion and the dissent into the published ruling, accepting changes only where the dissent is grounded in the supplied evidence.",
-              },
-            ].map((step, i) => (
-              <li
-                key={step.title}
-                className="grid grid-cols-[auto_1fr] gap-x-6 md:gap-x-10"
-              >
-                <span className="font-serif text-2xl text-ink-soft tabular-nums">
-                  {String(i + 1).padStart(2, "0")}
-                </span>
-                <div>
-                  <p className="font-serif text-xl leading-snug text-ink">
-                    {step.title}
-                  </p>
-                  <p className="mt-2 text-base leading-relaxed text-ink-soft">
-                    {step.body}
-                  </p>
-                </div>
-              </li>
-            ))}
-          </ol>
-          <p className="mt-6 text-base leading-relaxed text-ink-soft">
-            The purpose of this process is narrow: reduce category errors,
-            overconfidence, and unsupported reasoning. It does not make the
-            ruling true. It makes the ruling more honest about what the
-            supplied record can and cannot support.
-          </p>
-
-          {/* Pull-quote callout */}
-          <figure className="mt-10 border-l-4 border-ink bg-parchment-deep px-6 py-6 md:px-8 md:py-7">
-            <blockquote className="font-serif text-xl leading-snug text-ink md:text-2xl">
-              “The model tribunal did not merely improve the answer. It
-              revealed where the adjudicator itself was oversimplifying the
-              evidentiary record.”
-            </blockquote>
-            <figcaption className="institutional-mark mt-4">
-              On the purpose of dissent
-            </figcaption>
-          </figure>
-        </Section>
-
-        {/* 5 — Certainty labels */}
-        <Section index="05" title="Certainty labels">
+        {/* 5 — Certainty Labels */}
+        <Section index="05" title="Certainty Labels">
           <p>
             Each finding carries a certainty label that describes how strong
             the supplied record is for the call being made. Certainty is
@@ -245,41 +177,10 @@ function MethodologyPage() {
         {/* 6 — Disclosure */}
         <Section index="06" title="Disclosure">
           <p>
-            <strong className="font-medium text-ink">Admitted evidence.</strong>{" "}
-            Each ruling lists the documents on which it was based — the
-            article under review, the supplied transcript, and the model
-            tribunal audit. Material outside that record is not part of the
-            ruling.
-          </p>
-          <p>
-            <strong className="font-medium text-ink">
-              Model-assisted review.
-            </strong>{" "}
-            Rulings are drafted, challenged, and synthesised by language
-            models under the tribunal procedure described above. They are
-            not human judgments, and they should not be cited as such.
-          </p>
-          <p>
-            <strong className="font-medium text-ink">Limitations.</strong>{" "}
-            The supplied transcript is treated as authoritative within its
-            own scope. If the transcript itself is incomplete or inaccurate,
-            the ruling will reflect that. Tribunal does not authenticate
-            recordings or articles submitted, and rulings issued in this
-            prototype should be read as illustrative.
-          </p>
-          <p>
-            <strong className="font-medium text-ink">
-              Externally sourced claims.
-            </strong>{" "}
-            Passages classified as separate-source material,
-            reporter-added context, or requiring external verification are
-            outside the supplied record. They are not adjudicated as
-            interview-derived material and{" "}
-            <em className="not-italic font-medium text-ink">
-              may require separate verification
-            </em>{" "}
-            against the relevant primary records before being treated as
-            reliable.
+            This prototype uses model-assisted review to generate a sample
+            public ruling. It is not a legal judgment. It demonstrates how an
+            AI tribunal can make source-to-story compression inspectable,
+            challenge its own reasoning, and produce a citable record.
           </p>
         </Section>
       </main>

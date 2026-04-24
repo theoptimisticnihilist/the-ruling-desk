@@ -163,7 +163,7 @@ export const sampleRulingData: SampleRulingData = {
     productName: "AI Media Accuracy Verifier",
     publishedBy: "Tribunal Prototype",
     issuedDate: "2026-04-24",
-    publicUrl: "/rulings/001",
+    publicUrl: "https://tribunal-suzanerabicoff.lovable.app/rulings/001",
     recordStatus:
       "Sample ruling generated from supplied article, supplied transcript, and multi-model tribunal review",
     admittedEvidence: [
@@ -419,11 +419,10 @@ export const sampleRulingData: SampleRulingData = {
     },
   ],
   whatChangedAfterReview: [
-    "Expanded interview-derived findings beyond direct quotes to include structurally important paraphrased material.",
-    "Separated source provenance from wording fidelity and contextual fairness.",
-    "Reclassified the UFC / X Games sponsor line as a provenance gap rather than a compression finding.",
-    "Elevated the ‘any drug or substance’ language as the stronger compression finding because it underweights clinical supervision and regulatory support.",
-    "Retained the Magnussen medal-count passage as the strongest verification candidate, while avoiding a definitive falsity claim without external records.",
+    "Expanded interview-derived findings beyond direct quotes",
+    "Separated source provenance from wording fidelity and contextual fairness",
+    "Reclassified unsupported material as a provenance gap, not compression",
+    "Elevated “any drug or substance” and the Magnussen medal count as key risk findings",
   ],
   dissentSummary: {
     summary:
@@ -453,8 +452,8 @@ export const sampleRulingData: SampleRulingData = {
     scoreText: "Mostly Faithful",
     subscoreText: "Faithfulness 84 · Verifiability 68 · Tribunal Review 6/6",
     summary:
-      "Core Aaron-derived material was mostly faithful. Main risks: context compression and externally verifiable claims.",
-    url: "/rulings/001",
+      "Core Aaron-derived material was mostly faithful. Main risks: context compression and externally verifiable claims. A single model can answer. A tribunal can review.",
+    url: "https://tribunal-suzanerabicoff.lovable.app/rulings/001",
   },
 };
 
