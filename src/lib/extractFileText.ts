@@ -58,9 +58,8 @@ async function extractPdf(file: File): Promise<string> {
   for (let i = 1; i <= doc.numPages; i++) {
     const page = await doc.getPage(i);
     const content = await page.getTextContent();
-    const pageText = content.items
-      // @ts-expect-error pdfjs item shape
-      .map((it) => ("str" in it ? it.str : ""))
+    const pageText = (content.items as Array<{ str?: string }>)
+      .map((it) => (typeof it.str === "string" ? it.str : ""))
       .join(" ");
     parts.push(pageText);
   }
@@ -68,6 +67,7 @@ async function extractPdf(file: File): Promise<string> {
 }
 
 async function extractDocx(file: File): Promise<string> {
+  // @ts-expect-error - mammoth ships a browser bundle without types
   const mammoth = await import("mammoth/mammoth.browser");
   const buffer = await file.arrayBuffer();
   const result = await mammoth.extractRawText({ arrayBuffer: buffer });
