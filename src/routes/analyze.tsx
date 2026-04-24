@@ -2,6 +2,11 @@ import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { useEffect, useRef, useState } from "react";
 import { SiteHeader } from "@/components/SiteHeader";
 import { SiteFooter } from "@/components/SiteFooter";
+import {
+  ACCEPTED_DOC_EXTENSIONS,
+  extractFileText,
+  type ExtractedFile,
+} from "@/lib/extractFileText";
 
 export const Route = createFileRoute("/analyze")({
   head: () => ({
@@ -73,6 +78,14 @@ function AnalyzePage() {
   const navigate = useNavigate();
   const [transcript, setTranscript] = useState("");
   const [article, setArticle] = useState("");
+  const [transcriptFile, setTranscriptFile] = useState<ExtractedFile | null>(
+    null,
+  );
+  const [articleFile, setArticleFile] = useState<ExtractedFile | null>(null);
+  const [transcriptError, setTranscriptError] = useState<string | null>(null);
+  const [articleError, setArticleError] = useState<string | null>(null);
+  const [transcriptLoading, setTranscriptLoading] = useState(false);
+  const [articleLoading, setArticleLoading] = useState(false);
   const [sampleLoaded, setSampleLoaded] = useState(false);
   const [submitting, setSubmitting] = useState(false);
   const [stageIndex, setStageIndex] = useState(0);
@@ -92,6 +105,10 @@ function AnalyzePage() {
   const handleLoadSample = () => {
     setTranscript(SAMPLE_TRANSCRIPT);
     setArticle(SAMPLE_ARTICLE);
+    setTranscriptFile(null);
+    setArticleFile(null);
+    setTranscriptError(null);
+    setArticleError(null);
     setSampleLoaded(true);
   };
 
@@ -107,6 +124,31 @@ function AnalyzePage() {
     timersRef.current.push(
       setTimeout(() => navigate({ to: "/rulings/001" }), 3300),
     );
+  };
+
+  const handleFile = async (
+    file: File,
+    setLoading: (v: boolean) => void,
+    setError: (v: string | null) => void,
+    setFile: (v: ExtractedFile | null) => void,
+    setText: (v: string) => void,
+  ) => {
+    setLoading(true);
+    setError(null);
+    try {
+      const result = await extractFileText(file);
+      setFile(result);
+      setText(result.text);
+      setSampleLoaded(false);
+    } catch (err) {
+      console.error("File extract failed:", err);
+      setFile(null);
+      setError(
+        "We couldn't extract text from this file. Please paste the text manually.",
+      );
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -150,16 +192,30 @@ function AnalyzePage() {
             <FieldBlock
               label="Source · Interview transcript"
               chars={transcript.length}
-              uploadLabel="Upload transcript / audio / video"
+              uploadLabel="Upload transcript / document"
+              uploaded={transcriptFile}
+              loading={transcriptLoading}
+              error={transcriptError}
+              disabled={submitting}
+              onFile={(file) =>
+                handleFile(
+                  file,
+                  setTranscriptLoading,
+                  setTranscriptError,
+                  setTranscriptFile,
+                  setTranscript,
+                )
+              }
             >
               <textarea
                 value={transcript}
                 onChange={(e) => {
                   setTranscript(e.target.value);
+                  setTranscriptFile(null);
                   setSampleLoaded(false);
                 }}
                 disabled={submitting}
-                placeholder="Paste the full transcript of the recorded interview. Include speaker labels and timestamps where possible."
+                placeholder="Paste the full transcript of the recorded interview, or upload a .txt, .md, .rtf, .pdf, or .docx file."
                 rows={18}
                 className="w-full resize-y border border-border bg-card p-5 font-mono text-sm leading-relaxed text-ink placeholder:text-ink-soft/50 focus:border-ink focus:outline-none disabled:opacity-60"
               />
@@ -169,15 +225,29 @@ function AnalyzePage() {
               label="Subject · Published article"
               chars={article.length}
               uploadLabel="Upload article file"
+              uploaded={articleFile}
+              loading={articleLoading}
+              error={articleError}
+              disabled={submitting}
+              onFile={(file) =>
+                handleFile(
+                  file,
+                  setArticleLoading,
+                  setArticleError,
+                  setArticleFile,
+                  setArticle,
+                )
+              }
             >
               <textarea
                 value={article}
                 onChange={(e) => {
                   setArticle(e.target.value);
+                  setArticleFile(null);
                   setSampleLoaded(false);
                 }}
                 disabled={submitting}
-                placeholder="Paste the full text of the published article, or its URL."
+                placeholder="Paste the full text of the published article, or upload a .txt, .md, .rtf, .pdf, or .docx file."
                 rows={18}
                 className="w-full resize-y border border-border bg-card p-5 font-mono text-sm leading-relaxed text-ink placeholder:text-ink-soft/50 focus:border-ink focus:outline-none disabled:opacity-60"
               />
@@ -213,13 +283,25 @@ function FieldBlock({
   label,
   chars,
   uploadLabel,
+  uploaded,
+  loading,
+  error,
+  disabled,
+  onFile,
   children,
 }: {
   label: string;
   chars: number;
   uploadLabel: string;
+  uploaded: ExtractedFile | null;
+  loading: boolean;
+  error: string | null;
+  disabled: boolean;
+  onFile: (file: File) => void;
   children: React.ReactNode;
 }) {
+  const inputRef = useRef<HTMLInputElement>(null);
+
   return (
     <div>
       <div className="mb-3 flex items-baseline justify-between">
@@ -229,20 +311,49 @@ function FieldBlock({
         </span>
       </div>
       {children}
-      <div className="mt-3 flex items-center gap-3">
+      <div className="mt-3 flex flex-wrap items-center gap-3">
+        <input
+          ref={inputRef}
+          type="file"
+          accept={ACCEPTED_DOC_EXTENSIONS}
+          className="hidden"
+          onChange={(e) => {
+            const f = e.target.files?.[0];
+            if (f) onFile(f);
+            // reset so re-selecting the same file fires change again
+            e.target.value = "";
+          }}
+        />
         <button
           type="button"
-          disabled
-          className="inline-flex cursor-not-allowed items-center gap-2 border border-dashed border-border px-3 py-1.5 text-xs text-ink-soft"
-          title="Prototype — file upload not enabled"
+          onClick={() => inputRef.current?.click()}
+          disabled={disabled || loading}
+          className="inline-flex items-center gap-2 border border-ink px-3 py-1.5 text-xs font-medium uppercase tracking-wider text-ink transition-colors hover:bg-ink hover:text-parchment disabled:cursor-not-allowed disabled:opacity-60"
         >
           <span aria-hidden>↑</span>
-          {uploadLabel}
+          {loading ? "Reading file…" : uploadLabel}
         </button>
         <span className="text-[10px] uppercase tracking-wider text-ink-soft">
-          Prototype
+          .txt · .md · .rtf · .pdf · .docx
         </span>
       </div>
+      {uploaded && !error && (
+        <p className="mt-3 border-l-2 border-ink-soft/40 pl-3 text-xs leading-relaxed text-ink-soft">
+          <span className="font-medium text-ink">{uploaded.name}</span>
+          <span className="mx-2">·</span>
+          {uploaded.type}
+          <span className="mx-2">·</span>
+          {uploaded.text.length.toLocaleString()} chars extracted
+        </p>
+      )}
+      {error && (
+        <p
+          role="alert"
+          className="mt-3 border border-destructive/40 bg-destructive/5 px-3 py-2 text-xs leading-relaxed text-destructive"
+        >
+          {error}
+        </p>
+      )}
     </div>
   );
 }
