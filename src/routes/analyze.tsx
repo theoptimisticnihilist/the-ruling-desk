@@ -78,6 +78,14 @@ function AnalyzePage() {
   const navigate = useNavigate();
   const [transcript, setTranscript] = useState("");
   const [article, setArticle] = useState("");
+  const [transcriptFile, setTranscriptFile] = useState<ExtractedFile | null>(
+    null,
+  );
+  const [articleFile, setArticleFile] = useState<ExtractedFile | null>(null);
+  const [transcriptError, setTranscriptError] = useState<string | null>(null);
+  const [articleError, setArticleError] = useState<string | null>(null);
+  const [transcriptLoading, setTranscriptLoading] = useState(false);
+  const [articleLoading, setArticleLoading] = useState(false);
   const [sampleLoaded, setSampleLoaded] = useState(false);
   const [submitting, setSubmitting] = useState(false);
   const [stageIndex, setStageIndex] = useState(0);
@@ -97,6 +105,10 @@ function AnalyzePage() {
   const handleLoadSample = () => {
     setTranscript(SAMPLE_TRANSCRIPT);
     setArticle(SAMPLE_ARTICLE);
+    setTranscriptFile(null);
+    setArticleFile(null);
+    setTranscriptError(null);
+    setArticleError(null);
     setSampleLoaded(true);
   };
 
