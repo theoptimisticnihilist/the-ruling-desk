@@ -192,16 +192,30 @@ function AnalyzePage() {
             <FieldBlock
               label="Source · Interview transcript"
               chars={transcript.length}
-              uploadLabel="Upload transcript / audio / video"
+              uploadLabel="Upload transcript / document"
+              uploaded={transcriptFile}
+              loading={transcriptLoading}
+              error={transcriptError}
+              disabled={submitting}
+              onFile={(file) =>
+                handleFile(
+                  file,
+                  setTranscriptLoading,
+                  setTranscriptError,
+                  setTranscriptFile,
+                  setTranscript,
+                )
+              }
             >
               <textarea
                 value={transcript}
                 onChange={(e) => {
                   setTranscript(e.target.value);
+                  setTranscriptFile(null);
                   setSampleLoaded(false);
                 }}
                 disabled={submitting}
-                placeholder="Paste the full transcript of the recorded interview. Include speaker labels and timestamps where possible."
+                placeholder="Paste the full transcript of the recorded interview, or upload a .txt, .md, .rtf, .pdf, or .docx file."
                 rows={18}
                 className="w-full resize-y border border-border bg-card p-5 font-mono text-sm leading-relaxed text-ink placeholder:text-ink-soft/50 focus:border-ink focus:outline-none disabled:opacity-60"
               />
@@ -211,15 +225,29 @@ function AnalyzePage() {
               label="Subject · Published article"
               chars={article.length}
               uploadLabel="Upload article file"
+              uploaded={articleFile}
+              loading={articleLoading}
+              error={articleError}
+              disabled={submitting}
+              onFile={(file) =>
+                handleFile(
+                  file,
+                  setArticleLoading,
+                  setArticleError,
+                  setArticleFile,
+                  setArticle,
+                )
+              }
             >
               <textarea
                 value={article}
                 onChange={(e) => {
                   setArticle(e.target.value);
+                  setArticleFile(null);
                   setSampleLoaded(false);
                 }}
                 disabled={submitting}
-                placeholder="Paste the full text of the published article, or its URL."
+                placeholder="Paste the full text of the published article, or upload a .txt, .md, .rtf, .pdf, or .docx file."
                 rows={18}
                 className="w-full resize-y border border-border bg-card p-5 font-mono text-sm leading-relaxed text-ink placeholder:text-ink-soft/50 focus:border-ink focus:outline-none disabled:opacity-60"
               />
