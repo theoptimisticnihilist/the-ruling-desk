@@ -466,6 +466,17 @@ export function claimVerdictTone(card: ClaimCard): ClaimVerdictTone {
   return "unsupported";
 }
 
+// Returns true when a claim's verdict carries a "context compression" overlay.
+// The overlay is independent of classification and may apply to any
+// Interview-derived passage where wording compresses or flattens nuance.
+export function hasCompressionOverlay(card: ClaimCard): boolean {
+  return /compress/i.test(card.verdict);
+}
+
+export function classificationShort(c: Classification): string {
+  return CLASSIFICATIONS.find((x) => x.value === c)?.short ?? c;
+}
+
 export function formatRulingDate(iso: string): string {
   return new Date(iso).toLocaleDateString("en-GB", {
     year: "numeric",
