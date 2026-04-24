@@ -80,30 +80,45 @@ function RulingPage() {
 
       <main className="mx-auto max-w-3xl px-6 pt-16 pb-24 md:px-10 md:pt-20">
         {/* Masthead */}
-        <div className="border-y-2 border-ink py-6">
+        <div className="border-y-2 border-ink py-5">
           <div className="flex flex-wrap items-baseline justify-between gap-4">
             <span className="institutional-mark">
               {meta.publishedBy} · {meta.productName}
             </span>
-            <span className="institutional-mark">{meta.docketNumber}</span>
-          </div>
-          <div className="mt-2 flex flex-wrap items-baseline justify-between gap-4">
-            <span className="text-sm text-ink-soft">
-              Issued {formatRulingDate(meta.issuedDate)}
-            </span>
-            <span className="text-sm text-ink-soft">Public record</span>
+            <span className="institutional-mark">Public ruling</span>
           </div>
         </div>
 
-        {/* Title */}
+        {/* Title block */}
         <header className="mt-12">
           <p className="institutional-mark mb-4">In the matter of</p>
-          <h1 className="font-serif text-4xl leading-[1.1] tracking-tight text-ink md:text-5xl">
+          <h1 className="font-serif text-4xl leading-[1.05] tracking-tight text-ink md:text-5xl">
             {meta.caseTitle}
           </h1>
-          <p className="mt-6 font-serif text-xl italic leading-snug text-ink-soft">
-            Rating — {r.ratingLabel}
-          </p>
+
+          <dl className="mt-10 grid grid-cols-1 gap-x-10 gap-y-6 border-y border-border py-6 sm:grid-cols-2">
+            <Meta label="Docket number" value={meta.docketNumber} />
+            <Meta
+              label="Issued"
+              value={formatRulingDate(meta.issuedDate)}
+            />
+            <Meta
+              label="Public URL"
+              value={
+                <code className="break-all font-mono text-sm text-ink">
+                  {meta.publicUrl}
+                </code>
+              }
+            />
+            <Meta
+              label="Rating"
+              value={
+                <span className="font-serif text-lg italic text-ink">
+                  {r.ratingLabel}
+                </span>
+              }
+            />
+          </dl>
         </header>
 
         {/* Record status & evidence */}
