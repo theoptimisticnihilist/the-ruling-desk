@@ -101,13 +101,15 @@ function HomePage() {
               The Internet Needs a Truth Process
             </p>
             <h1 className="font-serif text-[2.6rem] leading-[1.05] tracking-tight text-ink md:text-6xl">
-              Turn source material into a public accuracy ruling.
+              Truth is not a vibe.
+              <br />
+              It is a process.
             </h1>
             <p className="mt-8 max-w-2xl text-lg leading-relaxed text-ink-soft md:text-xl">
-              Tribunal compares interviews to published coverage, separates
-              source-derived claims from external reporting, and issues a
-              self-reviewed public ruling built on evidence, challenge, and
-              disclosure.
+              Tribunal turns source material into a public accuracy ruling. It
+              compares interviews to published coverage, separates
+              source-derived claims from external reporting, and reviews the
+              ruling itself before publication.
             </p>
 
             <div className="mt-10 flex flex-col items-start gap-4 sm:flex-row sm:items-center sm:gap-6">
@@ -125,10 +127,6 @@ function HomePage() {
                 Analyze a Story
               </Link>
             </div>
-
-            <p className="mt-10 font-serif text-base italic text-ink-soft md:text-lg">
-              Truth is not a vibe. It is a process.
-            </p>
           </div>
         </section>
 
