@@ -6,6 +6,47 @@ export type ClaimVerdictTone =
   | "unsupported"
   | "verification";
 
+// Canonical classification taxonomy.
+// A claim card's `classification` field MUST be one of these four values.
+// "Context compression" is NOT a classification — it is a verdict overlay
+// that may apply on top of an Interview-derived classification.
+export type Classification =
+  | "Interview-derived"
+  | "Separate-source material"
+  | "Reporter-added context/background"
+  | "Requires external verification / unsupported in supplied record";
+
+export const CLASSIFICATIONS: {
+  value: Classification;
+  short: string;
+  description: string;
+}[] = [
+  {
+    value: "Interview-derived",
+    short: "Interview-derived",
+    description:
+      "The passage is grounded in the supplied interview transcript — as a direct quotation, a paraphrase, or a faithful synthesis of what the subject said on record.",
+  },
+  {
+    value: "Separate-source material",
+    short: "Separate-source material",
+    description:
+      "The passage comes from a different interview, a different speaker, or a separate piece of reporting that is not part of the supplied transcript.",
+  },
+  {
+    value: "Reporter-added context/background",
+    short: "Reporter-added context",
+    description:
+      "The passage is historical, legal, or explanatory context written by the reporter, not attributable to the subject.",
+  },
+  {
+    value: "Requires external verification / unsupported in supplied record",
+    short: "Requires external verification",
+    description:
+      "The passage makes a specific factual claim that is not present in the supplied transcript and must be checked against external records before being treated as reliable.",
+  },
+];
+
 export interface AdmittedEvidence {
   id: string;
   type: string;
