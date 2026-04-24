@@ -126,6 +126,31 @@ function AnalyzePage() {
     );
   };
 
+  const handleFile = async (
+    file: File,
+    setLoading: (v: boolean) => void,
+    setError: (v: string | null) => void,
+    setFile: (v: ExtractedFile | null) => void,
+    setText: (v: string) => void,
+  ) => {
+    setLoading(true);
+    setError(null);
+    try {
+      const result = await extractFileText(file);
+      setFile(result);
+      setText(result.text);
+      setSampleLoaded(false);
+    } catch (err) {
+      console.error("File extract failed:", err);
+      setFile(null);
+      setError(
+        "We couldn't extract text from this file. Please paste the text manually.",
+      );
+    } finally {
+      setLoading(false);
+    }
+  };
+
   return (
     <div className="min-h-screen bg-parchment">
       <SiteHeader />
