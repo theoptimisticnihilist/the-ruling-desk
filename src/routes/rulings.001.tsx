@@ -6,6 +6,8 @@ import {
   sampleRulingData,
   claimVerdictTone,
   formatRulingDate,
+  hasCompressionOverlay,
+  classificationShort,
   type ClaimCard,
   type ClaimVerdictTone,
 } from "@/data/sampleRulingData";
