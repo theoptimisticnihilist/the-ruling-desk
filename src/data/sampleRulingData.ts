@@ -110,7 +110,7 @@ export interface ClaimCard {
 }
 
 export interface ExcludedMaterial {
-  classification: string;
+  classification: Classification;
   articleText: string;
   reason: string;
 }
