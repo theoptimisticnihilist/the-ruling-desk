@@ -2,6 +2,11 @@ import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { useEffect, useRef, useState } from "react";
 import { SiteHeader } from "@/components/SiteHeader";
 import { SiteFooter } from "@/components/SiteFooter";
+import {
+  ACCEPTED_DOC_EXTENSIONS,
+  extractFileText,
+  type ExtractedFile,
+} from "@/lib/extractFileText";
 
 export const Route = createFileRoute("/analyze")({
   head: () => ({
