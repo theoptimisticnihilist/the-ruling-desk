@@ -6,6 +6,47 @@ export type ClaimVerdictTone =
   | "unsupported"
   | "verification";
 
+// Canonical classification taxonomy.
+// A claim card's `classification` field MUST be one of these four values.
+// "Context compression" is NOT a classification — it is a verdict overlay
+// that may apply on top of an Interview-derived classification.
+export type Classification =
+  | "Interview-derived"
+  | "Separate-source material"
+  | "Reporter-added context/background"
+  | "Requires external verification / unsupported in supplied record";
+
+export const CLASSIFICATIONS: {
+  value: Classification;
+  short: string;
+  description: string;
+}[] = [
+  {
+    value: "Interview-derived",
+    short: "Interview-derived",
+    description:
+      "The passage is grounded in the supplied interview transcript — as a direct quotation, a paraphrase, or a faithful synthesis of what the subject said on record.",
+  },
+  {
+    value: "Separate-source material",
+    short: "Separate-source material",
+    description:
+      "The passage comes from a different interview, a different speaker, or a separate piece of reporting that is not part of the supplied transcript.",
+  },
+  {
+    value: "Reporter-added context/background",
+    short: "Reporter-added context",
+    description:
+      "The passage is historical, legal, or explanatory context written by the reporter, not attributable to the subject.",
+  },
+  {
+    value: "Requires external verification / unsupported in supplied record",
+    short: "Requires external verification",
+    description:
+      "The passage makes a specific factual claim that is not present in the supplied transcript and must be checked against external records before being treated as reliable.",
+  },
+];
+
 export interface AdmittedEvidence {
   id: string;
   type: string;
@@ -56,7 +97,7 @@ export interface NumberedFinding {
 
 export interface ClaimCard {
   id: string;
-  classification: string;
+  classification: Classification;
   articleText: string;
   matchedSourceExcerpt: string;
   verdict: string;
@@ -69,7 +110,7 @@ export interface ClaimCard {
 }
 
 export interface ExcludedMaterial {
-  classification: string;
+  classification: Classification;
   articleText: string;
   reason: string;
 }
@@ -300,7 +341,7 @@ export const sampleRulingData: SampleRulingData = {
     },
     {
       id: "C-006",
-      classification: "Interview-derived with compression overlay",
+      classification: "Interview-derived",
       articleText:
         "In contrast, the Enhanced Games will allow athletes to use any drug or substance they want.",
       matchedSourceExcerpt:
@@ -423,6 +464,17 @@ export function claimVerdictTone(card: ClaimCard): ClaimVerdictTone {
   if (card.score >= 85) return "supported";
   if (card.score >= 75) return "partial";
   return "unsupported";
+}
+
+// Returns true when a claim's verdict carries a "context compression" overlay.
+// The overlay is independent of classification and may apply to any
+// Interview-derived passage where wording compresses or flattens nuance.
+export function hasCompressionOverlay(card: ClaimCard): boolean {
+  return /compress/i.test(card.verdict);
+}
+
+export function classificationShort(c: Classification): string {
+  return CLASSIFICATIONS.find((x) => x.value === c)?.short ?? c;
 }
 
 export function formatRulingDate(iso: string): string {

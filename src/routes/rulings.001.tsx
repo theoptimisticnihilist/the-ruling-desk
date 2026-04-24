@@ -6,6 +6,8 @@ import {
   sampleRulingData,
   claimVerdictTone,
   formatRulingDate,
+  hasCompressionOverlay,
+  classificationShort,
   type ClaimCard,
   type ClaimVerdictTone,
 } from "@/data/sampleRulingData";
@@ -412,16 +414,41 @@ function DisclosureRow({ label, value }: { label: string; value: string }) {
 function ClaimCardView({ card, index }: { card: ClaimCard; index: number }) {
   const tone = claimVerdictTone(card);
   const style = toneStyles[tone];
+  const compression = hasCompressionOverlay(card);
   return (
     <article className="grid grid-cols-[auto_1fr] gap-x-6 md:gap-x-10">
       <div className="font-mono text-sm text-ink-soft tabular-nums">
         {card.id}
       </div>
       <div>
-        <div className="flex flex-wrap items-baseline gap-x-3 gap-y-1">
+        {/* Classification — primary taxonomy slot */}
+        <div className="flex flex-wrap items-center gap-x-3 gap-y-2">
           <span className="font-serif text-xl text-ink-soft tabular-nums">
             {String(index).padStart(2, "0")}
           </span>
+          <span className="inline-flex items-center border border-ink/60 bg-parchment-deep px-2.5 py-1 text-xs font-medium uppercase tracking-wider text-ink">
+            {classificationShort(card.classification)}
+          </span>
+          {compression && (
+            <span className="inline-flex items-center gap-2 border border-rule-partial/50 px-2.5 py-1 text-xs font-medium uppercase tracking-wider text-rule-partial">
+              <span className="h-1.5 w-1.5 rounded-full bg-rule-partial" aria-hidden />
+              Context compression overlay
+            </span>
+          )}
+        </div>
+
+        <p className="mt-2 text-xs italic text-ink-soft">
+          Classification — {card.classification}
+        </p>
+
+        <div className="mt-5 grid gap-4 md:grid-cols-2">
+          <Excerpt kind="Article" text={card.articleText} />
+          <Excerpt kind="Source" text={card.matchedSourceExcerpt} />
+        </div>
+
+        {/* Verdict + score */}
+        <div className="mt-6 flex flex-wrap items-baseline gap-x-4 gap-y-2 border-t border-border pt-5">
+          <span className="institutional-mark">Verdict</span>
           <span
             className={`inline-flex items-center gap-2 border px-2.5 py-1 text-xs font-medium uppercase tracking-wider ${style.text} ${style.border}`}
           >
@@ -434,13 +461,6 @@ function ClaimCardView({ card, index }: { card: ClaimCard; index: number }) {
               <span className="text-sm text-ink-soft">/100</span>
             </span>
           )}
-        </div>
-
-        <p className="institutional-mark mt-3">{card.classification}</p>
-
-        <div className="mt-5 grid gap-4 md:grid-cols-2">
-          <Excerpt kind="Article" text={card.articleText} />
-          <Excerpt kind="Source" text={card.matchedSourceExcerpt} />
         </div>
 
         <div className="mt-6 border-l-2 border-border-strong pl-5">
