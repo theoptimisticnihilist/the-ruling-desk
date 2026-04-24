@@ -1,11 +1,11 @@
 import { Link } from "@tanstack/react-router";
 
-const navItems = [
+const navItems: { to: "/" | "/analyze" | "/rulings/001" | "/methodology"; label: string; exact?: boolean }[] = [
   { to: "/", label: "Home", exact: true },
   { to: "/analyze", label: "Analyze" },
   { to: "/rulings/001", label: "Sample Ruling" },
   { to: "/methodology", label: "Methodology" },
-] as const;
+];
 
 export function SiteHeader() {
   return (
