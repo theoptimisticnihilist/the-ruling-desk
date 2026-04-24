@@ -478,9 +478,10 @@ export function classificationShort(c: Classification): string {
 }
 
 export function formatRulingDate(iso: string): string {
-  return new Date(iso).toLocaleDateString("en-GB", {
-    year: "numeric",
-    month: "long",
-    day: "numeric",
-  });
+  // Parse as UTC date-only to avoid timezone shifts (e.g. "2026-04-24" → April 24).
+  const [y, m, d] = iso.slice(0, 10).split("-").map(Number);
+  return new Date(Date.UTC(y, (m ?? 1) - 1, d ?? 1)).toLocaleDateString(
+    "en-US",
+    { year: "numeric", month: "long", day: "numeric", timeZone: "UTC" },
+  );
 }
