@@ -283,13 +283,25 @@ function FieldBlock({
   label,
   chars,
   uploadLabel,
+  uploaded,
+  loading,
+  error,
+  disabled,
+  onFile,
   children,
 }: {
   label: string;
   chars: number;
   uploadLabel: string;
+  uploaded: ExtractedFile | null;
+  loading: boolean;
+  error: string | null;
+  disabled: boolean;
+  onFile: (file: File) => void;
   children: React.ReactNode;
 }) {
+  const inputRef = useRef<HTMLInputElement>(null);
+
   return (
     <div>
       <div className="mb-3 flex items-baseline justify-between">
@@ -299,20 +311,49 @@ function FieldBlock({
         </span>
       </div>
       {children}
-      <div className="mt-3 flex items-center gap-3">
+      <div className="mt-3 flex flex-wrap items-center gap-3">
+        <input
+          ref={inputRef}
+          type="file"
+          accept={ACCEPTED_DOC_EXTENSIONS}
+          className="hidden"
+          onChange={(e) => {
+            const f = e.target.files?.[0];
+            if (f) onFile(f);
+            // reset so re-selecting the same file fires change again
+            e.target.value = "";
+          }}
+        />
         <button
           type="button"
-          disabled
-          className="inline-flex cursor-not-allowed items-center gap-2 border border-dashed border-border px-3 py-1.5 text-xs text-ink-soft"
-          title="Prototype — file upload not enabled"
+          onClick={() => inputRef.current?.click()}
+          disabled={disabled || loading}
+          className="inline-flex items-center gap-2 border border-ink px-3 py-1.5 text-xs font-medium uppercase tracking-wider text-ink transition-colors hover:bg-ink hover:text-parchment disabled:cursor-not-allowed disabled:opacity-60"
         >
           <span aria-hidden>↑</span>
-          {uploadLabel}
+          {loading ? "Reading file…" : uploadLabel}
         </button>
         <span className="text-[10px] uppercase tracking-wider text-ink-soft">
-          Prototype
+          .txt · .md · .rtf · .pdf · .docx
         </span>
       </div>
+      {uploaded && !error && (
+        <p className="mt-3 border-l-2 border-ink-soft/40 pl-3 text-xs leading-relaxed text-ink-soft">
+          <span className="font-medium text-ink">{uploaded.name}</span>
+          <span className="mx-2">·</span>
+          {uploaded.type}
+          <span className="mx-2">·</span>
+          {uploaded.text.length.toLocaleString()} chars extracted
+        </p>
+      )}
+      {error && (
+        <p
+          role="alert"
+          className="mt-3 border border-destructive/40 bg-destructive/5 px-3 py-2 text-xs leading-relaxed text-destructive"
+        >
+          {error}
+        </p>
+      )}
     </div>
   );
 }
