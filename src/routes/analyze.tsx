@@ -69,8 +69,10 @@ The reality is that the fastest people in the world will no doubt be at the Enha
 He's not only won eight gold, five silver, and three bronze Olympic Medals, but he is also a two-time world champion in the 100m freestyle race...`;
 
 const STAGES = [
-  "Generating majority opinion…",
-  "Running dissent review…",
+  "Admitting evidence…",
+  "Classifying article passages…",
+  "Drafting majority opinion…",
+  "Running dissenting review…",
   "Issuing final ruling…",
 ] as const;
 
@@ -118,11 +120,13 @@ function AnalyzePage() {
     setSubmitting(true);
     setStageIndex(0);
 
-    // Multi-stage prototype loading sequence.
-    timersRef.current.push(setTimeout(() => setStageIndex(1), 1100));
-    timersRef.current.push(setTimeout(() => setStageIndex(2), 2200));
+    // Multi-stage prototype loading sequence (5 stages).
+    timersRef.current.push(setTimeout(() => setStageIndex(1), 800));
+    timersRef.current.push(setTimeout(() => setStageIndex(2), 1600));
+    timersRef.current.push(setTimeout(() => setStageIndex(3), 2400));
+    timersRef.current.push(setTimeout(() => setStageIndex(4), 3200));
     timersRef.current.push(
-      setTimeout(() => navigate({ to: "/rulings/001" }), 3300),
+      setTimeout(() => navigate({ to: "/rulings/001" }), 4000),
     );
   };
 
@@ -161,9 +165,9 @@ function AnalyzePage() {
           Analyze a Story
         </h1>
         <p className="mt-5 max-w-3xl text-base leading-relaxed text-ink-soft md:text-lg">
-          Paste a source transcript and the published article. Tribunal will
+          Paste the source record and the published article. Tribunal will
           classify article passages, compare interview-derived claims to the
-          source, run a challenge review, and issue a public ruling.
+          source, run a dissenting model review, and generate a public ruling.
         </p>
 
         <form onSubmit={handleSubmit} className="mt-12 space-y-10">
@@ -190,7 +194,8 @@ function AnalyzePage() {
           {/* Two textareas */}
           <div className="grid gap-10 md:grid-cols-2">
             <FieldBlock
-              label="Source · Interview transcript"
+              label="Admit Source Record"
+              helper="Upload or paste the interview transcript, source document, or supporting evidence."
               chars={transcript.length}
               uploadLabel="Upload transcript / document"
               uploaded={transcriptFile}
@@ -222,7 +227,8 @@ function AnalyzePage() {
             </FieldBlock>
 
             <FieldBlock
-              label="Subject · Published article"
+              label="Admit Published Article"
+              helper="Upload or paste the article to be reviewed against the source record."
               chars={article.length}
               uploadLabel="Upload article file"
               uploaded={articleFile}
@@ -258,14 +264,15 @@ function AnalyzePage() {
           <div className="flex flex-col gap-4 border-t border-border-strong pt-8 sm:flex-row sm:items-center sm:justify-between">
             <p className="max-w-md text-sm text-ink-soft">
               For this prototype, the sample case renders Ruling No. 001 using
-              the supplied GearJunkie article and interview transcript.
+              the supplied GearJunkie article, interview transcript, and model
+              tribunal review.
             </p>
             <button
               type="submit"
               disabled={!canSubmit}
               className="inline-flex items-center gap-3 border border-ink bg-ink px-6 py-3 text-sm font-medium tracking-wide text-parchment transition-colors hover:bg-ink/90 disabled:cursor-not-allowed disabled:border-border-strong disabled:bg-muted disabled:text-ink-soft"
             >
-              {submitting ? "Issuing ruling…" : "Generate Ruling"}
+              {submitting ? "Issuing ruling…" : "Generate Reviewed Ruling"}
               <span aria-hidden>→</span>
             </button>
           </div>
