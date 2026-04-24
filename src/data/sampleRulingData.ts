@@ -97,7 +97,7 @@ export interface NumberedFinding {
 
 export interface ClaimCard {
   id: string;
-  classification: string;
+  classification: Classification;
   articleText: string;
   matchedSourceExcerpt: string;
   verdict: string;
