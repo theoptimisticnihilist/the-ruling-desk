@@ -341,7 +341,7 @@ export const sampleRulingData: SampleRulingData = {
     },
     {
       id: "C-006",
-      classification: "Interview-derived with compression overlay",
+      classification: "Interview-derived",
       articleText:
         "In contrast, the Enhanced Games will allow athletes to use any drug or substance they want.",
       matchedSourceExcerpt:
